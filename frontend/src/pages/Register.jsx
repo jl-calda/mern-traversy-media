@@ -40,7 +40,7 @@ const Register = () => {
             </p>
           </div>
           <form
-            className="flex flex-col space-y-2 border rounded-md shadow-md p-6 max-w-xl"
+            className="flex flex-col space-y-2 flex-1 border rounded-md shadow-md p-6 max-w-xl"
             onSubmit={onSubmit}
           >
             <div className={inputRowStyle}>
