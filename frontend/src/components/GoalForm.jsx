@@ -1,13 +1,25 @@
 import { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
+import { createGoal } from "../features/goals/goalSlice";
 
 const GoalForm = () => {
   const [text, setText] = useState("");
 
+  const dispatch = useDispatch();
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    dispatch(createGoal({ text }));
+    setText("");
+  };
+
   return (
     <section className="p-4 rounded-md border-2 border-slate-500 flex flex-col space-y-2 items-center justify-center">
       <h1>Add your goals</h1>
-      <form className="flex-1 flex-col space-y-4 w-full p-4 rounded-md border-2 border-slate-500">
+      <form
+        className="flex-1 flex-col space-y-4 w-full p-4 rounded-md border-2 border-slate-500"
+        onSubmit={onSubmit}
+      >
         <div className="flex items-center justify-center space-x-4">
           <label htmlFor="text" className="">
             Goal
