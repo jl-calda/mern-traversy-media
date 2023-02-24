@@ -77,7 +77,13 @@ const deleteGoal = asyncHandler(async (req, res) => {
     throw new Error("User not authorized");
   }
 
-  await goal.remove();
+  Goal.deleteOne({ _id: req.params.id }, function (err, result) {
+    if (err) {
+      console.err(err);
+    } else {
+      res.json(result);
+    }
+  });
 });
 
 module.exports = { getGoal, setGoal, updateGoal, deleteGoal };
