@@ -7,8 +7,9 @@ import { login, reset } from "../features/auth/authSlice";
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { user, userDetails, isLoading, isError, isSuccess, message } =
-    useSelector((state) => state.auth);
+  const { user, isError, isSuccess, message } = useSelector(
+    (state) => state.auth
+  );
   const [formData, setFormData] = useState({
     email: "",
     password: "",
