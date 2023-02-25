@@ -29,7 +29,7 @@ const Header = () => {
       </Link>
       <nav>
         {user ? (
-          <Link to="/login">
+          <Link to={user ? "/" : "/login"}>
             <button className={linkBoxStyle} onClick={onLogout}>
               <FaSignInAlt className={linkIconStyle} />
               <span className={linkTextStyle}>Logout</span>

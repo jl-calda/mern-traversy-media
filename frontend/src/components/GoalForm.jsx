@@ -14,34 +14,22 @@ const GoalForm = () => {
   };
 
   return (
-    <section className="p-4 rounded-md border-2 border-slate-500 flex flex-col space-y-2 items-center justify-center">
-      <h1>Add your goals</h1>
-      <form
-        className="flex-1 flex-col space-y-4 w-full p-4 rounded-md border-2 border-slate-500"
-        onSubmit={onSubmit}
+    <form className="flex-1 flex w-full space-x-4 mb-8" onSubmit={onSubmit}>
+      <input
+        type="text"
+        id="text"
+        value={text}
+        className="flex-grow rounded-md bg-inherit px-3 border-b focus:bg-white focus:outline-none focus:ring-1 focus:ring-teal-500 focus:border-transparent"
+        onChange={(e) => setText(e.target.value)}
+      />
+
+      <button
+        type="submit"
+        className="px-2 py-3 bg-teal-500 rounded-md text-slate-50 hover:bg-teal-600 transition-colors duration-300"
       >
-        <div className="flex items-center justify-center space-x-4">
-          <label htmlFor="text" className="">
-            Goal
-          </label>
-          <input
-            type="text"
-            id="text"
-            value={text}
-            className="flex-1 border-2 border-slate-500 rounded-md px-3 py-2"
-            onChange={(e) => setText(e.target.value)}
-          />
-        </div>
-        <div className="flex items-center justify-center">
-          <button
-            type="submit"
-            className="w-full px-2 py-3 bg-teal-500 rounded-md text-slate-50"
-          >
-            Add Goal
-          </button>
-        </div>
-      </form>
-    </section>
+        Add Goal
+      </button>
+    </form>
   );
 };
 

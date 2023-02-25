@@ -3,27 +3,18 @@ import axios from "axios";
 const API_URL = "/api/goals/";
 
 //Create new goal
-
 const createGoal = async (goalData, token) => {
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   };
-  // const response = await fetch(API_URL, {
-  //   method: "POST",
-  //   headers: {
-  //     Authorization: `Bearer ${token}`,
-  //   },
-  //   body: { goalData }, // body data type must match "Content-Type" header
-  // });
-
-  // const data = await response.json();
   const response = await axios.post(API_URL, goalData, config);
 
   return response.data;
 };
 
+//Get all goals
 const getGoals = async (token) => {
   const config = {
     headers: {
@@ -35,6 +26,7 @@ const getGoals = async (token) => {
   return response.data;
 };
 
+//Delete goal
 const deleteGoal = async (id, token) => {
   const config = {
     headers: {
@@ -46,6 +38,7 @@ const deleteGoal = async (id, token) => {
   return response.data;
 };
 
+//Update goal
 const updateGoal = async (id, goalData, token) => {
   const config = {
     headers: {

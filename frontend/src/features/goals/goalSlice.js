@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import goalService from "./goalService";
+import { toast } from "react-toastify";
 
 const initialState = {
   goals: [],
@@ -66,10 +67,9 @@ export const deleteGoal = createAsyncThunk(
 
 export const updateGoal = createAsyncThunk(
   "goals/update",
-  async (id, goalData, thunkAPI) => {
+  async ({ id, goalData }, thunkAPI) => {
     try {
       const token = thunkAPI.getState().auth.user.token;
-      console.log("token", token);
 
       return await goalService.updateGoal(id, goalData, token);
     } catch (error) {
@@ -96,10 +96,10 @@ export const goalSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(createGoal.fulfilled, (state, action) => {
-        // console.log(action.payload);
         state.isLoading = false;
         state.isSuccess = true;
         state.goals.push(action.payload);
+        toast.success("Goal added successfully");
       })
       .addCase(createGoal.rejected, (state, action) => {
         state.isLoading = false;
@@ -110,7 +110,6 @@ export const goalSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(getGoals.fulfilled, (state, action) => {
-        // console.log(action.payload);
         state.isLoading = false;
         state.isSuccess = true;
         state.goals = action.payload;
@@ -134,22 +133,24 @@ export const goalSlice = createSlice({
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
+        toast.warn("Goal updated successfully");
       })
       .addCase(updateGoal.pending, (state) => {
         state.isLoading = true;
       })
       .addCase(updateGoal.fulfilled, (state, action) => {
         state.isLoading = false;
-        console.log("updating goals are");
         state.isSuccess = true;
         state.goals = state.goals.map((goal) =>
           goal._id === action.payload._id ? action.payload : goal
         );
+        toast.success("Goal updated successfully");
       })
       .addCase(updateGoal.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
+        toast.error(action.payload);
       });
   },
 });

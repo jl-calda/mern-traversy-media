@@ -1,56 +1,51 @@
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { getGoals, reset } from "../features/goals/goalSlice";
 import GoalForm from "../components/GoalForm";
-import Spinner from "../components/Spinner";
-import GoalItem from "../components/GoalItem";
+import GoalItems from "../components/GoalItems";
+import { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { getUser } from "../features/auth/authSlice";
+import avatarDefault from "../assets/avatar.svg";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.auth);
-  const { goals, isLoading, isError, message } = useSelector(
-    (state) => state.goals
-  );
-
+  const navigate = useNavigate();
+  const { user, userDetails } = useSelector((state) => state.auth);
+  // const {
   useEffect(() => {
-    if (isError) {
-      console.log(message);
-    }
     if (!user) {
       navigate("/login");
     } else {
-      dispatch(getGoals());
+      dispatch(getUser());
     }
-
-    return () => dispatch(reset());
-  }, [user, navigate, isError, message, dispatch]);
-
-  // useEffect(() => {
-  //   dispatch(getGoals());
-  // }, [goals]);
-
-  if (isLoading) {
-    return <Spinner />;
-  }
+  }, [user]);
 
   return (
     <>
-      <section>
-        <h1>Welcome</h1>
-        <p>{user && user.name}</p>
-        <p>Goals Dashboard</p>
-        {goals.length !== 0 ? (
-          <div className="flex flex-col space-y-2">
-            {goals.map((goal) => (
-              <GoalItem goal={goal} key={goal._id} />
-            ))}
+      <section className="flex flex-col space-y-4">
+        <div className="flex space-x-2 border-1 rounded-md shadow-md px-2 py-4 bg-slate-50">
+          <div className="flex flex-col items-center space-y-1">
+            <div className="bg-slate-200 rounded-md">
+              {userDetails ? (
+                <img
+                  src={userDetails.avatar}
+                  alt="avatar"
+                  className="w-16 h-16 rounded-full"
+                />
+              ) : (
+                <img
+                  src={avatarDefault}
+                  alt="avatar"
+                  className="w-16 h-16 rounded-full"
+                />
+              )}
+            </div>
+            <p className="uppercase text-lg">
+              {userDetails ? userDetails.name : "...Loading"}
+            </p>
           </div>
-        ) : (
-          <p>You have no goals</p>
-        )}
-        <GoalForm />
+          <GoalForm />
+        </div>
+        <GoalItems />
       </section>
     </>
   );

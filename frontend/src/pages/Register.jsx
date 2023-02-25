@@ -3,16 +3,19 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import Spinner from "../components/Spinner";
+
 import { register, reset } from "../features/auth/authSlice";
+import avatarDefault from "../assets/avatar.svg";
 
 const Register = () => {
   const [formData, setFormData] = useState({
     name: "",
+    avatar: null,
     email: "",
     password: "",
     password2: "",
   });
-  const { name, email, password, password2 } = formData;
+  const { name, avatar, email, password, password2 } = formData;
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -26,8 +29,8 @@ const Register = () => {
       toast.error(message);
     }
     if (isSuccess || user) {
-      navigate("/");
-      console.log(user);
+      navigate("/login");
+      toast.success("Registration successful. Please login");
     }
     dispatch(reset());
   }, [user, isError, isSuccess, message, navigate, dispatch]);
@@ -39,16 +42,28 @@ const Register = () => {
     }));
   };
 
+  const onFileUpload = async (e) => {
+    const file = e.target.files[0];
+    const base64 = await convertToBase64(file);
+    setFormData((prevState) => ({
+      ...prevState,
+      avatar: base64,
+    }));
+  };
+
   const onSubmit = (e) => {
     e.preventDefault();
+    console.log(e);
     if (password !== password2) {
       toast.error("Passwords do not match");
     } else {
       const userData = {
         name,
+        avatar,
         email,
         password,
       };
+      console.log(userData);
       dispatch(register(userData));
     }
   };
@@ -79,6 +94,23 @@ const Register = () => {
             className="flex flex-col space-y-2 flex-1 border rounded-md shadow-md p-6 max-w-xl"
             onSubmit={onSubmit}
           >
+            <div className={`${inputRowStyle} justify-center`}>
+              <label htmlFor="avatar">
+                <img
+                  src={avatar || avatarDefault}
+                  className="h-24 w-24 rounded-full border-[1px] border-teal-500 p-2 cursor-pointer"
+                  alt="avatar"
+                />
+              </label>
+              <input
+                type="file"
+                name="avatar"
+                id="avatar"
+                onChange={onFileUpload}
+                accept="jpeg, png, jpg"
+                className="hidden"
+              />
+            </div>
             <div className={inputRowStyle}>
               <label htmlFor="name" className={labelStyle}>
                 Username
@@ -155,3 +187,18 @@ const Register = () => {
 };
 
 export default Register;
+
+function convertToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const fileReader = new FileReader();
+    fileReader.readAsDataURL(file);
+
+    fileReader.onload = () => {
+      resolve(fileReader.result);
+    };
+
+    fileReader.onerror = (error) => {
+      reject(error);
+    };
+  });
+}

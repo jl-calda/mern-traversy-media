@@ -7,7 +7,7 @@ const User = require("../models/userModel");
 // @route POST /api/users
 // @access Public
 const registerUser = asyncHandler(async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, avatar, email, password } = req.body;
   //Check all fields are filled
   if (!name || !email || !password) {
     res.status(400);
@@ -28,18 +28,14 @@ const registerUser = asyncHandler(async (req, res) => {
   //Create user
   const user = await User.create({
     name,
+    avatar,
     email,
     password: hashedPassword,
   });
 
   if (user) {
     //If user is created
-    res.status(201).json({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      token: generateToken(user._id),
-    });
+    res.status(201).json({ token: generateToken(user._id) });
   } else {
     res.status(400);
     throw new Error("Invalid user data");
@@ -53,12 +49,7 @@ const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
   if (user && (await bcrypt.compare(password, user.password))) {
-    res.json({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      token: generateToken(user._id),
-    });
+    res.json({ token: generateToken(user._id) });
   } else {
     res.status(401);
     throw new Error("Invalid email or password");
