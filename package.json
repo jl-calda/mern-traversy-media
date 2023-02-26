@@ -9,7 +9,8 @@
     "client": "npm start --prefix frontend",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "post-install": "npm install && npm install --prefix frontend",
-    "post-build": "npm run build --prefix frontend"
+    "post-build": "npm run build --prefix frontend",
+    "post-deploy": "npm install && npm install --prefix frontend && npm run build --prefix frontend"
   },
   "author": "Joey Calda",
   "license": "MIT",
