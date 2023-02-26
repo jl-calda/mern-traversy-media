@@ -16,7 +16,7 @@ function App() {
           <Header />
           <div className="container mx-auto flex-col flex flex-1 px-4">
             <Routes>
-              <Route path="/" element={<Dashboard />} />
+              <Route path="" element={<Dashboard />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
             </Routes>
