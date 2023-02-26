@@ -25,7 +25,7 @@ const Dashboard = () => {
         <div className="flex space-x-2 border-1 rounded-md shadow-md px-2 py-4 bg-slate-50">
           <div className="flex flex-col items-center space-y-1">
             <div className="bg-slate-200 rounded-md">
-              {userDetails ? (
+              {userDetails.avatar ? (
                 <img
                   src={userDetails.avatar}
                   alt="avatar"
